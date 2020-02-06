@@ -1,5 +1,180 @@
-extends layout
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Show and hide layers
+    meta(name='viewport', content='initial-scale=1,maximum-scale=1,user-scalable=no')
+    script(src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js')
+    link(href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css', rel='stylesheet')
+    style.
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  body
+    style.
+      #menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Open Sans', sans-serif;
+      }
+      #menu a {
+        font-size: 13px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+      }
+      #menu a:last-child {
+        border: none;
+      }
+      #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+      }
+      #menu a.active {
+        background-color: #3887be;
+        color: #ffffff;
+      }
+      #menu a.active:hover {
+        background: #3074a4;
+      }
+    nav#menu
+    #map
+    script.
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWlrYWRvIiwiYSI6ImtrSm5MVDQifQ.YVIiQgxIi5bCq744MydC2Q';
+      let map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mikado/ck1acqn3j5emn1cohk7gvfkpy',
+        center: [29.04886235, 40.99646031],
+        zoom: 11.15,
+        pitch: 45,
+        //bearing: -17.6,
+        container: 'map',
+        antialias: true
+      });
+      map.on('load', function() {
+        map.addSource('durak', {
+          type: 'geojson',
+          data: '/api/durak',
+          cluster: true,
+          clusterMaxZoom: 10, // Max zoom to cluster points on
+          clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+        });
+        map.addLayer({
+          'id': 'IETT Otobüs Durakları',
+          'type': 'circle',
+          'source': 'durak',
+          'layout': {
+            'visibility': 'visible'
+          },
+          'paint': {
+            'circle-radius': 6,
+            'circle-color': '#3132ff',
+            'circle-opacity':0.2
+          },
+          //'source-layer': 'durak'
+        });
+        map.addSource('filo', {
+          type: 'geojson',
+          data: 'api/filo'
+        });
+        map.addLayer({
+          'id': 'IETT Otobüs',
+          'type': 'circle',
+          'source': 'filo',
+          'layout': {
+            'visibility': 'visible',
+          },
+          'paint': {
+            'circle-radius': 8,
+            'circle-color': 'rgb(241,51,45)',
+            'circle-opacity': 0.2
+          }
+        });
+      });
+      let toggleableLayerIds = ['IETT Otobüs', 'IETT Otobüs Durakları'];
+      for (let i = 0; i < toggleableLayerIds.length; i++) {
+        let id = toggleableLayerIds[i];
+        let link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.textContent = id;
+        link.onclick = function(e) {
+          let clickedLayer = this.textContent;
+          e.preventDefault();
+          e.stopPropagation();
+          let visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+          if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+          } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+          }
+        };
+        let layers = document.getElementById('menu');
+        layers.appendChild(link);
+      }
+      let popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
+      map.on('mouseenter', 'IETT Otobüs Durakları', function(e) {
+      // Change the cursor style as a UI indicator.
+      map.getCanvas().style.cursor = 'pointer';
+      
+      let coordinates = e.features[0].geometry.coordinates.slice();
+      let description = e.features[0].properties.SDURAKADI + " / " + e.features[0].properties.ILCEADI;
+      
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+      
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+      popup
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
+      });
+      map.on('mouseleave', 'durak', function() {
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+      });
+      map.on('mouseenter', 'IETT Otobüs', function (e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer';
 
-block content
-  h1= title
-  p Welcome to #{title}
+        let coordinates = e.features[0].geometry.coordinates.slice();
+        let description = "Plaka " + e.features[0].properties.Plaka + " / " + "Saat " + e.features[0].properties.Saat;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+      });
+      map.on('mouseleave', 'otobus', function () {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
