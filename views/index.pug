@@ -160,7 +160,10 @@ html
       map.on('mouseenter', 'IETT Otobüs Durakları', function(e) {
       // Change the cursor style as a UI indicator.
       map.getCanvas().style.cursor = 'pointer';
-
+      map.on('mouseleave', 'durak', function() {
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+      });
       
       let coordinates = e.features[0].geometry.coordinates.slice();
       let description = e.features[0].properties.SDURAKADI + " / " + e.features[0].properties.ILCEADI;
@@ -179,10 +182,7 @@ html
       .setHTML(description)
       .addTo(map);
       });
-      map.on('mouseleave', 'durak', function() {
-      map.getCanvas().style.cursor = '';
-      popup.remove();
-      });
+
       map.on('mouseenter', 'IETT Otobüs', function (e) {
         // Change the cursor style as a UI indicator.
         map.getCanvas().style.cursor = 'pointer';
@@ -228,4 +228,7 @@ html
                 .setHTML(description)
                 .addTo(map);
       });
-
+      map.on('mouseleave', 'IETT Otobüs Garajları', function () {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
