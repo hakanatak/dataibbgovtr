@@ -130,10 +130,6 @@ html
           },
         });
       });
-      map.on('mouseleave', 'filo', function () {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
       let toggleableLayerIds = ['IETT Otobüs', 'IETT Otobüs Durakları','IETT Otobüs Garajları'];
       for (let i = 0; i < toggleableLayerIds.length; i++) {
         let id = toggleableLayerIds[i];
@@ -164,6 +160,7 @@ html
       map.on('mouseenter', 'IETT Otobüs Durakları', function(e) {
       // Change the cursor style as a UI indicator.
       map.getCanvas().style.cursor = 'pointer';
+
       
       let coordinates = e.features[0].geometry.coordinates.slice();
       let description = e.features[0].properties.SDURAKADI + " / " + e.features[0].properties.ILCEADI;
@@ -189,6 +186,10 @@ html
       map.on('mouseenter', 'IETT Otobüs', function (e) {
         // Change the cursor style as a UI indicator.
         map.getCanvas().style.cursor = 'pointer';
+        map.on('mouseleave', 'IETT Otobüs', function () {
+          map.getCanvas().style.cursor = '';
+          popup.remove();
+        });
 
         let coordinates = e.features[0].geometry.coordinates.slice();
         let description = "Plaka " + e.features[0].properties.Plaka + " / " + "Saat " + e.features[0].properties.Saat;
