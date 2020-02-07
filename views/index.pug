@@ -2,7 +2,7 @@ doctype html
 html
   head
     meta(charset='utf-8')
-    title Show and hide layers
+    title İBB İETT Geojson API
     meta(name='viewport', content='initial-scale=1,maximum-scale=1,user-scalable=no')
     script(src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js')
     link(href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css', rel='stylesheet')
@@ -16,14 +16,14 @@ html
         position: absolute;
         z-index: 1;
         top: 10px;
-        right: 10px;
+        left: 10px;
         border-radius: 3px;
         width: 120px;
-        border: 1px solid rgba(0, 0, 0, 0.4);
+        border: 0px solid rgba(0, 0, 0, 0.4);
         font-family: 'Open Sans', sans-serif;
       }
       #menu a {
-        font-size: 13px;
+        font-size: 11px;
         color: #404040;
         display: block;
         margin: 0;
@@ -41,11 +41,11 @@ html
         color: #404040;
       }
       #menu a.active {
-        background-color: #3887be;
+        background-color: #3f6ce7;
         color: #ffffff;
       }
       #menu a.active:hover {
-        background: #3074a4;
+        background: #f6ab1a;
       }
     nav#menu
     #map
@@ -54,7 +54,7 @@ html
       let map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mikado/ck1acqn3j5emn1cohk7gvfkpy',
-        center: [29.04886235, 40.99646031],
+        center: [29.01672568 , 41.02108889],
         zoom: 11.15,
         pitch: 45,
         //bearing: -17.6,
@@ -62,6 +62,16 @@ html
         antialias: true
       });
       map.on('load', function() {
+        map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(
+                new mapboxgl.GeolocateControl({
+                  positionOptions: {
+                    enableHighAccuracy: true
+                  },
+                  trackUserLocation: true
+                })
+        );
+
         map.addSource('durak', {
           type: 'geojson',
           data: '/api/durak',
@@ -69,7 +79,27 @@ html
           clusterMaxZoom: 10, // Max zoom to cluster points on
           clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
         });
+        map.addSource('garaj', {
+          type: 'geojson',
+          data: '/api/garaj',
+          cluster: true,
+          clusterMaxZoom: 10, // Max zoom to cluster points on
+          clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+        });
         map.addLayer({
+          'id': 'IETT Otobüs Garajları',
+          'type': 'circle',
+          'source': 'garaj',
+          'layout': {
+            'visibility': 'visible'
+          },
+          'paint': {
+            'circle-radius': 12,
+            'circle-color': '#f6ab1a',
+            'circle-opacity':0.5
+          },
+        });
+              map.addLayer({
           'id': 'IETT Otobüs Durakları',
           'type': 'circle',
           'source': 'durak',
@@ -77,11 +107,10 @@ html
             'visibility': 'visible'
           },
           'paint': {
-            'circle-radius': 6,
+            'circle-radius': 8,
             'circle-color': '#3132ff',
-            'circle-opacity':0.2
+            'circle-opacity': 0.2
           },
-          //'source-layer': 'durak'
         });
         map.addSource('filo', {
           type: 'geojson',
@@ -92,16 +121,20 @@ html
           'type': 'circle',
           'source': 'filo',
           'layout': {
-            'visibility': 'visible',
+            'visibility': 'visible'
           },
           'paint': {
             'circle-radius': 8,
-            'circle-color': 'rgb(241,51,45)',
+            'circle-color': '#f1332d',
             'circle-opacity': 0.2
-          }
+          },
         });
       });
-      let toggleableLayerIds = ['IETT Otobüs', 'IETT Otobüs Durakları'];
+      map.on('mouseleave', 'filo', function () {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+      let toggleableLayerIds = ['IETT Otobüs', 'IETT Otobüs Durakları','IETT Otobüs Garajları'];
       for (let i = 0; i < toggleableLayerIds.length; i++) {
         let id = toggleableLayerIds[i];
         let link = document.createElement('a');
@@ -174,7 +207,24 @@ html
                 .setHTML(description)
                 .addTo(map);
       });
-      map.on('mouseleave', 'otobus', function () {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
+      map.on('mouseenter', 'IETT Otobüs Garajları', function (e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer';
+
+        let coordinates = e.features[0].geometry.coordinates.slice();
+        let description = "Garaj Adı: " + e.features[0].properties.GARAJ_ADI + " / " + "ID: " + e.features[0].properties.ID;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
       });
+

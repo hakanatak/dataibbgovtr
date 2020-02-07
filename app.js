@@ -3,7 +3,7 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
-
+let maki = require('maki');
 let indexRouter = require('./routes/index');
 let garajRouter = require('./routes/garaj');
 let durakRouter = require('./routes/durak');
