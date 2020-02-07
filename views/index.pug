@@ -50,6 +50,15 @@ html
     nav#menu
     #map
     script.
+      // Global site tag (gtag.js) - Google Analytics
+      async ='', src = 'https://www.googletagmanager.com/gtag/js?id=UA-75592143-2'
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-75592143-2');
+
       mapboxgl.accessToken = 'pk.eyJ1IjoibWlrYWRvIiwiYSI6ImtrSm5MVDQifQ.YVIiQgxIi5bCq744MydC2Q';
       let map = new mapboxgl.Map({
         container: 'map',
@@ -71,7 +80,6 @@ html
                   trackUserLocation: true
                 })
         );
-
         map.addSource('durak', {
           type: 'geojson',
           data: '/api/durak',
@@ -232,11 +240,3 @@ html
         map.getCanvas().style.cursor = '';
         popup.remove();
       });
-      // Global site tag (gtag.js) - Google Analytics
-      script(async = '', src = 'https://www.googletagmanager.com/gtag/js?id=UA-75592143-2')
-      script.window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'UA-75592143-2');
