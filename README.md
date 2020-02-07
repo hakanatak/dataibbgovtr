@@ -5,15 +5,15 @@ Aşağıdaki servisler ile ;
  2. Belirli zamanlarda request edeceğiniz geojson'ı kayıt ederek zamansal analizler 	gerçekleştirebilirsiniz. 
  3. KeplerGL, Carto, Tableau gibi veri görselleştirme yazılımları ile görselleştirme yapabilmek için ise servisten dönen veriyi ***.geojson** uzantılı olarak kaydedebilirsiniz.
 # Geojson Servisler
-1.İETT Otobüslerinin anlık konumları 
+1. İETT Otobüslerinin anlık konumları 
 https://mekansal.herokuapp.com/api/filo
-2.İETT Otobüs Durakları anlık konumları 
+ 2. İETT Otobüs Durakları anlık konumları 
 https://mekansal.herokuapp.com/api/durak
-3.İETT Otobüs Garajları
+3. İETT Otobüs Garajları
 https://mekansal.herokuapp.com/api/garaj
 ve 
-4.İETT Duyurular (**json**)
-https://mekansal.herokuapp.com/api/duyuru   
+4. İETT Duyurular (**json**)
+https://mekansal.herokuapp.com/api/duyuru 
 
 # Teknik Bilgiler
 İBB Açık Veri Portalı' nda yayınlanan SOAP servisleri harita üretimi için uygun bir formatta yayınlanmamakta ve bir dizi işlem gerektirmektedir. 
@@ -25,10 +25,4 @@ SOAP servisleri her gece saat 00.15'den sonra kapatılmaktadır.
 SOAP servisleri yavaştır ve çok sayıda durak olduğu için normalden geç yüklenmektedir.
 
 **Anahtar kelimeler**
- #nodejs #expressjs #geojson #webstorm #pug #mapboxGL #soap #proj4 
- 
-```mermaid
-graph LR
-A[data.ibb.gov.tr ] -- SOAP --> B((NodeJs))
-B -- Geojson--> D{Heroku}
-```
+ #nodejs #expressjs #geojson #webstorm #pug #mapboxGL #soap #proj4 #github
