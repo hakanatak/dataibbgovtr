@@ -23,6 +23,5 @@ Webstorm kullanılarak geliştirilen proje ExpressJs kullanılarak oluşturulan 
 **Notlar**
 SOAP servisleri her gece saat 00.15'den sonra kapatılmaktadır.
 SOAP servisleri yavaştır ve çok sayıda durak olduğu için normalden geç yüklenmektedir.
-**Not** Bu projeyi hazırlarken takıldığın noktalarda desteklerini esirgemeyen çalışma arkadaşlarım Ahmet Mum ve Halim Turan' a teşekkürlerimi iletirim. 
 **Anahtar kelimeler**
  #nodejs #expressjs #geojson #webstorm #pug #mapboxGL #soap #proj4 #github
