@@ -18,8 +18,8 @@ https://mekansal.herokuapp.com/api/duyuru
 # Teknik Bilgiler
 İBB Açık Veri Portalı' nda yayınlanan SOAP servisleri harita üretimi için uygun bir formatta yayınlanmamakta ve bir dizi işlem gerektirmektedir. 
 Uygulamada, gerekli koordinat ve veri tipi dönüşümleri gerçekleştirilerek featurecollection olarak yayınlanmaktadır.
-Hazırlanan bu küçük API ile görselleştirme çalışmaları ve harita ile uğraşmak isteyen üniversite öğrencileri ya da 
-Webstorm kullanılarak geliştirilen proje ExpressJs kullanılarak oluşturulan bir Nodejs uygulamasıdır. Herokuya deploy edilerek https://mekansal.herokuapp.com adresi üzerinden yayınlanması sağlanmaktadır. Anasayfada verilerin görüntülenmesini sağlayan temel bir  harita vardır. 
+Hazırlanan bu küçük API ile veri görselleştirme çalışmaları yapılabilir.
+API Uygulaması Webstorm kullanılarak geliştirilen proje ExpressJs kullanılarak oluşturulan bir Nodejs uygulamasıdır. Herokuya deploy edilerek https://mekansal.herokuapp.com adresi üzerinden yayınlanması sağlanmaktadır. Anasayfada verilerin görüntülenmesini sağlayan temel bir  harita vardır. 
 **Notlar**
 SOAP servisleri her gece saat 00.15'den sonra kapatılmaktadır.
 SOAP servisleri yavaştır ve çok sayıda durak olduğu için normalden geç yüklenmektedir.
