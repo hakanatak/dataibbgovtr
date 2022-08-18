@@ -16,8 +16,8 @@ RUN npm install
 # Uygulamanın içerisindeki kodları alır ve docker image'i içerisine aktarır.
 COPY . .
 
-# Container’ın docker içinde çalışacağı port adresini belirler.
-EXPOSE 3000
+# # Container’ın docker içinde çalışacağı port adresini belirler.
+# EXPOSE 3000
 
 # Oluşturulan image Docker container içerisinde çalıştırılırken kullanılacak command'i tanımlar.
 CMD [ "npm", "start" ]
