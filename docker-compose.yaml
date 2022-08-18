@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-  IETT_MAP:
+  iett-map:
     build: 
       dockerfile: ./Dockerfile
       context: ./
