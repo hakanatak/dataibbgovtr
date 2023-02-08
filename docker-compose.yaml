@@ -1,0 +1,12 @@
+version: '3'
+services:
+
+  iett-map:
+    build: 
+      dockerfile: ./Dockerfile
+      context: ./
+
+    ports:
+      - "3000:3000"
+      
+    command: npm start
