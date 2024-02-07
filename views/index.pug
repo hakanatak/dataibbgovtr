@@ -51,14 +51,6 @@ html
       }
     nav#menu
     #map
-      // Global site tag (gtag.js) - Google Analytics
-      async ='', src = 'https://www.googletagmanager.com/gtag/js?id=UA-75592143-2'
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-      dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'UA-75592143-2');
       mapboxgl.accessToken = 'pk.eyJ1IjoibWlrYWRvIiwiYSI6ImtrSm5MVDQifQ.YVIiQgxIi5bCq744MydC2Q';
       let map = new mapboxgl.Map({
       container: 'map',
