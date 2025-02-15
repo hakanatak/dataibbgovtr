@@ -9,38 +9,45 @@ let garajRouter = require('./routes/garaj');
 let durakRouter = require('./routes/durak');
 let duyuruRouter = require('./routes/duyuru');
 let filoRouter = require('./routes/filo');
+let cors = require('cors');
+
 let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware setup
+app.use(logger('dev')); // Logging requests
+app.use(express.json()); // Parses incoming JSON requests
+app.use(express.urlencoded({ extended: false })); // Parses incoming URL-encoded data
+app.use(cookieParser()); // Parses cookies from requests
+app.use(express.static(path.join(__dirname, 'public'))); // Serves static files
 
-app.use('/', indexRouter);
-app.use('/', garajRouter);
-app.use('/', durakRouter);
-app.use('/', duyuruRouter);
-app.use('/', filoRouter);
+// Routes setup
+app.use('/', indexRouter); // Home route
+app.use('/api/garaj', garajRouter); // Garaj route
+app.use('/api/durak', durakRouter); // Durak route
+app.use('/api/duyuru', duyuruRouter); // Duyuru route
+app.use('/api/filo', filoRouter); // Filo route
 
-// catch 404 and forward to error handler
+app.use(cors());  // CORS'u etkinleştir
+
+
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  next(createError(404)); // If route is not found, forward to error handler
 });
 
-// error handler
+// Error handler middleware
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development mode
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // Render the error page
+  res.status(err.status || 500); // Set the response status code
+  res.render('error'); // Render the error page with the error details
 });
 
 module.exports = app;

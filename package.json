@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
@@ -14,7 +15,7 @@
     "morgan": "~1.9.1",
     "proj4": "^2.6.0",
     "pug": "^2.0.4",
-    "soap": "^0.30.0",
+    "soap": "^1.1.8",
     "wellknown": "^0.5.0"
   }
 }
